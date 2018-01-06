@@ -1,0 +1,102 @@
+:root, html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Lato', sans-serif !important;
+  /* --font-family-sans-serif: 'Montserrat', sans-serif !important;
+  --font-family-monospace: 'Montserrat', sans-serif !important; */
+}
+
+
+body {
+  background-color: #f2f2f2;
+}
+
+.studycards--header {
+  background-color: #00897B;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.navbar-light .navbar-brand, .navbar-light .navbar-brand:hover  {
+    color: #fff;
+}
+
+.flex-justified {
+  display: flex;
+  justify-content: space-between;
+}
+.counter-cont {
+  font-weight: bold;
+}
+.got-right-cont, .missed-cont {
+  width: 160px;
+  font-weight: bold;
+}
+.got-right-cont {
+  color: #4CAF50;
+}
+.missed-cont {
+  color: #F4511E;
+}
+.translationcontainer {
+  height: 60px;
+  display: block;
+}
+
+/* Icons in buttons */
+.btn {
+  margin: 0 5px;
+}
+.btn-round {
+  border-radius: 2rem;
+  width: 2.26rem;
+  height: 2.26rem;
+}
+.btn-round-sm {
+  border-radius: 1rem;
+  width: 1.8rem;
+  height: 1.8rem;
+}
+.btn-outline-success, .btn-outline-danger {
+  background-color: #fff;
+}
+.btn span {
+  display: flex;
+  align-items: center;
+  margin: 0 5px;
+}
+.bt-icon {
+  font-size: 1.4rem;
+  line-height: 1.6rem;
+}
+.bt-icon-sm {
+  font-size: 1rem;
+  line-height: 1rem;
+}
+
+.bt-icon-right {
+  margin-left: 10px;
+}
+.bt-icon-left {
+  margin-right: 10px;
+}
+.save-card-bt {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+  cursor: pointer;
+}
+.delete-icon {
+  font-size: 1.25rem;
+  color: #868e96;
+  transition: color 0.2s linear;
+}
+.delete-icon:hover {
+  color: #dc3545;
+}
+@media (min-width: 1200px) {
+  .container {
+      max-width: 1380px;
+  }
+}

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,600" rel="stylesheet" type="text/css">
+    <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- <link rel="stylesheet" href="/css/bootstrap.css"> -->
+    <nav class="navbar navbar-light studycards--header">
+      <span class="navbar-brand mb-0 h1">Study Cards</span>
+    </nav>
+    <div class="container">
+
+      <div class="row justify-content-md-center">
+        <div class="card" style="width: 45rem; margin-bottom: 40px;">
+          <div class="card-header flex-justified">
+            <div class="flex-justified">
+              <div class="got-right-cont">
+                You got right: 0
+              </div>
+              <div class="missed-cont">
+                You missed: 0
+              </div>
+            </div>
+            <div class="counter-cont">
+              Card 1 of 22
+            </div>
+          </div>
+          <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
+          <div class="card-body">
+            <h5 class="card-title">Broadcast</h5>
+            <label>Example Sentence</label>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <hr>
+            <div class="translationcontainer">
+              <label>Translated Word</label>
+              <div class="collapse" id="translationText">
+                <h5 class="card-title">Transmitir</h5>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer flex-justified">
+            <a href="#" class="btn btn-sm btn-outline-success btn-round"><i class="ion-arrow-left-c bt-icon"></i></a>
+            <div class="">
+              <a href="#" class="btn btn-sm btn-success btn-icon text-uppercase" data-toggle="collapse" data-target="#translationText" aria-expanded="false" aria-controls="translationText" id="showTranslationBt"><span>Show&nbsp;&nbsp;Translation<i class="ion-eye bt-icon bt-icon-right"></i></span></a>
+              <a href="#" class="btn btn-sm btn-outline-success btn-icon text-uppercase disabled" disabled><span>I Got It<i class="ion-thumbsup bt-icon bt-icon-right"></i></span></a>
+              <a href="#" class="btn btn-sm btn-outline-danger btn-icon text-uppercase disabled" disabled><span>I Missed<i class="ion-thumbsdown bt-icon bt-icon-right"></i></span></a>
+            </div>
+            <a href="#" class="btn btn-sm btn-outline-success btn-round"><i class="ion-arrow-right-c bt-icon"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="display:flex; flex-direction: column;">
+        <p>
+          <button class="btn btn-sm btn-outline-secondary text-uppercase" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            <span><i class="ion-ios-photos bti-con bt-icon-left"></i>Add / Delete Cards</span>
+          </button>
+        </p>
+        <div class="collapse" id="collapseExample">
+          <div class="row">
+            <div class="col-md-12">
+            <label style="margin-left: 13px;">New Card</label>
+            </div>
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Word</span>
+                </div>
+                <input type="text" class="form-control wordInput" aria-label="Default" aria-describedby="inputGroup-sizing-default" id="wordInput">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Translated Word</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" id="transWordInput">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Example Sentence</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="expSentenceInput">
+                <div class="input-group-append">
+                  <span class="input-group-text save-card-bt text-uppercase" id="saveBt">Save Card</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 15%;">Word</th>
+                  <th style="width: 65%;">Example Sentence</th>
+                  <th style="width: 15%;">Translated Word</th>
+                  <th style="width: 5%;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>text</td><td>text</td><td>text</td><td><a href="#" class="delete-icon"><i class="ion-close-circled"></i></a></td>
+                </tr>
+                <tr>
+                  <td>text</td><td>text</td><td>text</td><td><a href="#" class="delete-icon"><i class="ion-close-circled"></i></a></td>
+                </tr>
+                <tr>
+                  <td>text</td><td>text</td><td>text</td><td><a href="#" class="delete-icon"><i class="ion-close-circled"></i></a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+
+    </script>
+  </body>
+</html>
