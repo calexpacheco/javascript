@@ -10,12 +10,27 @@ const UIcontroller = (() => {
       showTranslationBt: 'showTranslationBt',
       wordInput: 'wordInput',
       transWordInput: 'transWordInput',
-      expSentenceInput: 'expSentenceInput'
+      expSentenceInput: 'expSentenceInput',
+      wordTitle: 'wordTitle',
+      transWordTitle: 'transWordTitle',
+      expSentenceTxt: 'expSentenceTxt'
     };
 
     // Provide strings from the DOM to the other controllers
     return {
-      getDOMItems: DOMItems
+      getDOMItems: DOMItems,
+
+      // Clear New Card field
+      clearFields: () => {
+        document.getElementById(DOMItems.wordInput).value = '';
+        document.getElementById(DOMItems.transWordInput).value = '';
+        document.getElementById(DOMItems.expSentenceInput).value = '';
+      },
+    },
+    
+    // Update UI by populating the card
+    updateCard: () => {
+
     }
 
 })();
@@ -38,15 +53,14 @@ const studyController = ((UICtrl) => {
   }
 
   return {
+    // Add new cards
     addCard: () => {
 
-      let wordVal = document.getElementById('wordInput').value,
-      transWordVal = document.getElementById('transWordInput').value,
-      expSentenceVal = document.getElementById('expSentenceInput').value;
+      cardsData.cards.word.push(document.getElementById(DOMItems.wordInput).value);
+      cardsData.cards.transWord.push(document.getElementById(DOMItems.transWordInput).value);
+      cardsData.cards.expSentence.push(document.getElementById(DOMItems.expSentenceInput).value);
 
-      cardsData.cards.word.push(wordVal);
-      cardsData.cards.transWord.push(transWordVal);
-      cardsData.cards.expSentence.push(expSentenceVal);
+      UICtrl.clearFields();
 
       console.log(cardsData.cards);
     }
@@ -66,6 +80,12 @@ const AppController = ((studyCtrl, UICtrl) => {
   const addEventListeners = () => {
 
     document.getElementById(DOMItems.saveBt).addEventListener('click', studyCtrl.addCard);
+
+    document.addEventListener('keypress', (event) => {
+      if (event.keyCode === 13 || event.whitch === 13 ) {
+        studyCtrl.addCard();
+      }
+    });
 
   }
 
