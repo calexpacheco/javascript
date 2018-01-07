@@ -13,7 +13,8 @@ const UIcontroller = (() => {
       expSentenceInput: 'expSentenceInput',
       wordTitle: 'wordTitle',
       transWordTitle: 'transWordTitle',
-      expSentenceTxt: 'expSentenceTxt'
+      expSentenceTxt: 'expSentenceTxt',
+      cardTableBody: 'cardTableBody'
     };
 
     // Provide strings from the DOM to the other controllers
@@ -26,11 +27,17 @@ const UIcontroller = (() => {
         document.getElementById(DOMItems.transWordInput).value = '';
         document.getElementById(DOMItems.expSentenceInput).value = '';
       },
-    },
-    
-    // Update UI by populating the card
-    updateCard: () => {
 
+      // Update UI by populating the card
+      addCardUI: (word, transWord, expSentence) => {
+
+      let htmlRow;
+
+      htmlRow = `<tr><td id="wordCell">${word}</td><td id="expSentCell">${expSentence}</td><td id="transWordCell">${transWord}</td><td><a href="#" class="delete-icon"><i class="ion-close-circled"></i></a></td></tr>`;
+
+      document.getElementById(DOMItems.cardTableBody).insertAdjacentHTML('beforeend', htmlRow);
+
+      }
     }
 
 })();
@@ -54,7 +61,7 @@ const studyController = ((UICtrl) => {
 
   return {
     // Add new cards
-    addCard: () => {
+    addCardObj: () => {
 
       cardsData.cards.word.push(document.getElementById(DOMItems.wordInput).value);
       cardsData.cards.transWord.push(document.getElementById(DOMItems.transWordInput).value);
@@ -63,7 +70,10 @@ const studyController = ((UICtrl) => {
       UICtrl.clearFields();
 
       console.log(cardsData.cards);
-    }
+    },
+
+    cardsDataCards: cardsData.cards
+
   }
 
 })(UIcontroller);
@@ -74,18 +84,28 @@ const studyController = ((UICtrl) => {
 
 const AppController = ((studyCtrl, UICtrl) => {
 
-  const DOMItems = UICtrl.getDOMItems;
+  const DOMItems = UICtrl.getDOMItems, OBJItems = studyCtrl.cardsDataCards;
 
   // Listen to the DOM
   const addEventListeners = () => {
 
-    document.getElementById(DOMItems.saveBt).addEventListener('click', studyCtrl.addCard);
+    document.getElementById(DOMItems.saveBt).addEventListener('click', updateCardApp);
 
     document.addEventListener('keypress', (event) => {
       if (event.keyCode === 13 || event.whitch === 13 ) {
-        studyCtrl.addCard();
+        updateCardApp();
       }
     });
+
+  }
+
+  const updateCardApp = () => {
+
+    // Add Card to the Object
+    studyCtrl.addCardObj()
+
+    // Add new row to the cards table
+    UICtrl.addCardUI(OBJItems.word[OBJItems.word.length - 1], OBJItems.transWord[OBJItems.transWord.length - 1], OBJItems.expSentence[OBJItems.expSentence.length - 1]);
 
   }
 
