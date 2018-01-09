@@ -19,24 +19,29 @@ const UIcontroller = (() => {
 
     // Provide strings from the DOM to the other controllers
     return {
-      getDOMItems: DOMItems,
+        getDOMItems: DOMItems,
 
-      // Clear New Card field
-      clearFields: () => {
-        document.getElementById(DOMItems.wordInput).value = '';
-        document.getElementById(DOMItems.transWordInput).value = '';
-        document.getElementById(DOMItems.expSentenceInput).value = '';
+        // Clear New Card field
+        clearFields: () => {
+          document.getElementById(DOMItems.wordInput).value = '';
+          document.getElementById(DOMItems.transWordInput).value = '';
+          document.getElementById(DOMItems.expSentenceInput).value = '';
+        },
+
+        // Update UI by populating the card
+        addCardUI: (currWord, currTransWord, currExpSentence, currItemIndex) => {
+
+        let htmlRow;
+
+        htmlRow = `<tr id="row-${currItemIndex}"><td id="wordCell">${currWord}</td><td id="expSentCell">${currExpSentence}</td><td id="transWordCell">${currTransWord}</td><td><a href="#" class="delete-icon" id="item-${currItemIndex}" onClick="AppController.deleteItem(${currItemIndex})"><i class="ion-close-circled"></i></a></td></tr>`;
+
+        document.getElementById(DOMItems.cardTableBody).insertAdjacentHTML('beforeend', htmlRow);
+
       },
 
-      // Update UI by populating the card
-      addCardUI: (word, transWord, expSentence) => {
-
-      let htmlRow;
-
-      htmlRow = `<tr><td id="wordCell">${word}</td><td id="expSentCell">${expSentence}</td><td id="transWordCell">${transWord}</td><td><a href="#" class="delete-icon"><i class="ion-close-circled"></i></a></td></tr>`;
-
-      document.getElementById(DOMItems.cardTableBody).insertAdjacentHTML('beforeend', htmlRow);
-
+      deleteCardUI: (currItemIndex) => {
+        let el = document.getElementById(`row-${currItemIndex}`);
+        el.remove();
       }
     }
 
@@ -105,12 +110,28 @@ const AppController = ((studyCtrl, UICtrl) => {
     studyCtrl.addCardObj()
 
     // Add new row to the cards table
-    UICtrl.addCardUI(OBJItems.word[OBJItems.word.length - 1], OBJItems.transWord[OBJItems.transWord.length - 1], OBJItems.expSentence[OBJItems.expSentence.length - 1]);
+    let currWord = OBJItems.word[OBJItems.word.length - 1],
+    currTransWord = OBJItems.transWord[OBJItems.transWord.length - 1],
+    currExpSentence = OBJItems.expSentence[OBJItems.expSentence.length - 1],
+    currItemIndex = OBJItems.word.indexOf(OBJItems.word[OBJItems.word.length - 1]);
+
+    UICtrl.addCardUI(currWord, currTransWord, currExpSentence, currItemIndex);
 
   }
 
-  // Initialize everything. This is the BIG BANG
   return {
+
+    deleteItem: (currItemIndex) => {
+
+        // Delete from the UI in the cards table
+      UIcontroller.deleteCardUI(currItemIndex);
+      console.log(`${currItemIndex} was deleted from the UI`);
+
+      // Delete from the object
+
+    },
+
+    // Initialize everything. This is the BIG BANG
     init: () => {
       console.log("Application has started. Have a Guinness and have a nice day.");
       addEventListeners();
@@ -122,7 +143,6 @@ const AppController = ((studyCtrl, UICtrl) => {
 
 // Remove this and nothing works
 AppController.init();
-
 
 
 
