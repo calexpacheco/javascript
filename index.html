@@ -30,7 +30,7 @@
               </div>
             </div>
             <div class="counter-cont">
-              Card 1 of 22
+              Card <span id="currCardIndex">0</span> of <span id="allCards">0</span>
             </div>
           </div>
           <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
@@ -47,13 +47,13 @@
             </div>
           </div>
           <div class="card-footer flex-justified">
-            <a href="#" class="btn btn-sm btn-outline-success btn-round"><i class="ion-arrow-left-c bt-icon"></i></a>
+            <a href="#" class="btn btn-sm btn-outline-success btn-round" id="prevBt"><i class="ion-arrow-left-c bt-icon"></i></a>
             <div class="">
               <a href="#" class="btn btn-sm btn-success btn-icon text-uppercase" data-toggle="collapse" data-target="#translationText" aria-expanded="false" aria-controls="translationText" id="showTranslationBt"><span>Show&nbsp;&nbsp;Translation<i class="ion-eye bt-icon bt-icon-right"></i></span></a>
               <a href="#" class="btn btn-sm btn-outline-success btn-icon text-uppercase disabled" disabled><span>I Got It<i class="ion-thumbsup bt-icon bt-icon-right"></i></span></a>
               <a href="#" class="btn btn-sm btn-outline-danger btn-icon text-uppercase disabled" disabled><span>I Missed<i class="ion-thumbsdown bt-icon bt-icon-right"></i></span></a>
             </div>
-            <a href="#" class="btn btn-sm btn-outline-success btn-round"><i class="ion-arrow-right-c bt-icon"></i></a>
+            <a href="#" class="btn btn-sm btn-outline-success btn-round" id="nextBt"><i class="ion-arrow-right-c bt-icon"></i></a>
           </div>
         </div>
       </div>
@@ -94,13 +94,15 @@
                 </div>
                 <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="expSentenceInput">
                 <div class="input-group-append">
-                  <span class="input-group-text save-card-bt text-uppercase" id="saveBt">Save Card</span>
+                  <!-- <button class="input-group-text save-card-bt text-uppercase disabled-bt" id="saveBt" disabled>Save Card</button> -->
+                  <span class="input-group-text save-card-bt text-uppercase disabled-bt" id="saveBt">Save Card</span>
                 </div>
               </div>
             </div>
           </div>
-          <div class="card card-body">
-            <table class="table">
+          <div class="card card-body text-center">
+            <p style="display: block;" id="noCardsMsg">There are no cards available</p>
+            <table class="table" style="display: none;">
               <thead>
                 <tr>
                   <th style="width: 15%;">Word</th>
