@@ -21,7 +21,13 @@ const UIcontroller = (() => {
       prevBt: 'prevBt',
       currCardIndex: 'currCardIndex',
       allCards: 'allCards',
-      counterCont: '.counter-cont'
+      counterCont: '.counter-cont',
+      gotItBt: 'gotItBt',
+      missedBt: 'missedBt',
+      thumbsup: '.ion-thumbsup',
+      thumbsdown: '.ion-thumbsdown',
+      gotRightLabel: 'gotRightLabel',
+      missedItLabel: 'missedItLabel'
     };
 
     // Provide strings from the DOM to the other controllers
@@ -46,7 +52,6 @@ const UIcontroller = (() => {
         htmlRow = `<tr id="row-${currItemIndex}"><td id="wordCell">${currWord}</td><td id="expSentCell">${currExpSentence}</td><td id="transWordCell">${currTransWord}</td><td><a href="#" class="delete-icon" id="item-${currItemIndex}" onClick="AppController.deleteItem(${currItemIndex}, '${currWord}')"><i class="ion-close-circled"></i></a></td></tr>`;
 
         document.getElementById(DOMItems.cardTableBody).insertAdjacentHTML('beforeend', htmlRow);
-
       },
 
       populateCardUI: (arrWord, currWord, currTransWord, currExpSentence) => {
@@ -105,14 +110,15 @@ const studyController = ((UICtrl) => {
 
   const DOMItems = UICtrl.getDOMItems;
 
+  let gotRightCount = 0, missedItCount = 0;
+
   const cardsData = {
     cards: {
       word: [],
       transWord: [],
       expSentence: []
     },
-    gotRight: [],
-    missed: []
+    scores: []
   }
 
   return {
@@ -120,68 +126,129 @@ const studyController = ((UICtrl) => {
     // Add new cards
     addCardObj: () => {
 
+      cardsData.cards.word.length >= 0 ? studyController.startScoreButtons(false, false) : studyController.startScoreButtons(true, true);
+
       cardsData.cards.word.push(document.getElementById(DOMItems.wordInput).value);
       cardsData.cards.transWord.push(document.getElementById(DOMItems.transWordInput).value);
       cardsData.cards.expSentence.push(document.getElementById(DOMItems.expSentenceInput).value);
+      cardsData.scores.push(null);
 
       UICtrl.clearFields();
 
       console.log(cardsData.cards);
+      console.log(cardsData.scores);
     },
 
     // Delete cards from the object
     deleteCardObj: (currWord) => {
+
       let currIndex = cardsData.cards.word.indexOf(currWord);
 
       cardsData.cards.word.splice(currIndex, 1);
       cardsData.cards.transWord.splice(currIndex, 1);
       cardsData.cards.expSentence.splice(currIndex, 1);
+      cardsData.scores.splice(currIndex, 1);
+
+      cardsData.cards.word.length <= 0 ? studyController.startScoreButtons(true, true) : '';
+
       console.log(cardsData.cards);
+      console.log(cardsData.scores);
     },
 
     cardsDataCards: cardsData.cards,
 
-    // navCards: (direction, currWord) => {
-    //   // let i = cardsData.cards.word.indexOf(currWord);
-    //   // let currIndex = cardsData.cards.word.indexOf(currWord);
-    //   if (direction === "next") {
-    //     let i = 0;
-    //     // (arrWord, currWord, currTransWord, currExpSentence)
-    //     i++;
-    //     console.log(i);
-    //     UICtrl.populateCardUI(cardsData.cards.word.length, cardsData.cards.word[i], cardsData.cards.transWord[i], cardsData.cards.expSentence[i]);
-    //
-    //   } else {
-    //     currIndex--;
-    //     console.log(i);
-    //     UICtrl.populateCardUI(cardsData.cards.word.length, cardsData.cards.word[i], cardsData.cards.transWord[i], cardsData.cards.expSentence[i]);
-    //   }
-    // }
-
     nextCard: (currIndex) => {
-      if (currIndex < cardsData.cards.word.length - 1  && currIndex >= 0) {
+      if (cardsData.cards.word[currIndex] != null) {
+        if (currIndex < cardsData.cards.word.length - 1  && currIndex >= 0) {
         // Increment index
         currIndex++;
 
         // Display next word in the Array
         UICtrl.populateCardUI(cardsData.cards.word, cardsData.cards.word[currIndex], cardsData.cards.transWord[currIndex], cardsData.cards.expSentence[currIndex]);
-      } else {
-        currIndex = 0;
-        UICtrl.populateCardUI(cardsData.cards.word, cardsData.cards.word[currIndex], cardsData.cards.transWord[currIndex], cardsData.cards.expSentence[currIndex]);
-      }
+        } else {
+          currIndex = 0;
+          UICtrl.populateCardUI(cardsData.cards.word, cardsData.cards.word[currIndex], cardsData.cards.transWord[currIndex], cardsData.cards.expSentence[currIndex]);
+        }
+      };
+
+      studyController.setStatusIcon(currIndex);
     },
 
     prevCard: (currIndex) => {
-      if (currIndex <= cardsData.cards.word.length - 1  && currIndex >= 1) {
-        // Increment index
-        currIndex--;
+      if (cardsData.cards.word[currIndex] != null) {
+        if (currIndex <= cardsData.cards.word.length - 1  && currIndex >= 1) {
+          // Increment index
+          currIndex--;
 
-        // Display next word in the Array
-        UICtrl.populateCardUI(cardsData.cards.word, cardsData.cards.word[currIndex], cardsData.cards.transWord[currIndex], cardsData.cards.expSentence[currIndex]);
+          // Display next word in the Array
+          UICtrl.populateCardUI(cardsData.cards.word, cardsData.cards.word[currIndex], cardsData.cards.transWord[currIndex], cardsData.cards.expSentence[currIndex]);
 
-      } else {
-        currIndex = cardsData.cards.word.length - 1;
-        UICtrl.populateCardUI(cardsData.cards.word, cardsData.cards.word[currIndex], cardsData.cards.transWord[currIndex], cardsData.cards.expSentence[currIndex]);
+        } else {
+          currIndex = cardsData.cards.word.length - 1;
+          UICtrl.populateCardUI(cardsData.cards.word, cardsData.cards.word[currIndex], cardsData.cards.transWord[currIndex], cardsData.cards.expSentence[currIndex]);
+        }
+      };
+
+      studyController.setStatusIcon(currIndex);
+    },
+
+    updateScore: (currScore, currIndex) => {
+
+      // add number 1 if got it right or 0 if missed to scores array. Add null if there is no score.
+      cardsData.scores[currIndex] = currScore;
+      console.log(cardsData.scores);
+
+      // put a check or error icon next to the word not translated
+      studyController.setStatusIcon(currIndex);
+
+      // update gotItScore or missedScore
+      studyController.setStatusCount(currIndex, currScore);
+
+    },
+
+    startScoreButtons: (gr, ms) => {
+      document.getElementById(DOMItems.gotItBt).disabled = gr;
+      document.getElementById(DOMItems.missedBt).disabled = ms;
+    },
+
+    setStatusIcon: (currIndex) => {
+
+      setButtons = (tu, td, gr, ms) => {
+        document.querySelector(DOMItems.thumbsup).setAttribute("style", `display:${tu};`);
+        document.querySelector(DOMItems.thumbsdown).setAttribute("style", `display:${td};`);
+        studyController.startScoreButtons(gr, ms);
+      }
+
+      /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      ///////////////////////// REVEISA ISSO AQUI FAZ FAVOOOOOOR!!!!!!!!!! ///////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+      if(cardsData.scores[0] != null) {
+        if (cardsData.scores[currIndex] === 1){
+         setButtons("block", "none", true, false);
+       } else if (cardsData.scores[currIndex] === 0) {
+         setButtons("none", "block", false, true);
+       } else {
+         setButtons("none", "none", false, false);
+       }
+      }
+    },
+
+    setStatusCount: (currIndex, currScore) => {
+      if (currScore === 1) {
+        gotRightCount++;
+        if (missedItCount > 0 && gotRightCount + missedItCount === cardsData.cards.word.length + 1) {
+          missedItCount--;
+        }
+        document.getElementById(DOMItems.gotRightLabel).innerText = gotRightCount;
+        document.getElementById(DOMItems.missedItLabel).innerText = missedItCount;
+      } else if (currScore === 0) {
+        missedItCount++;
+        if (gotRightCount > 0 && gotRightCount + missedItCount === cardsData.cards.word.length + 1) {
+          gotRightCount--;
+        }
+        document.getElementById(DOMItems.gotRightLabel).innerText = gotRightCount;
+        document.getElementById(DOMItems.missedItLabel).innerText = missedItCount;
       }
     }
 
@@ -197,15 +264,27 @@ const AppController = ((studyCtrl, UICtrl) => {
 
   const DOMItems = UICtrl.getDOMItems, OBJItems = studyCtrl.cardsDataCards, wordInput = document.getElementById(DOMItems.wordInput);
 
+  const getCurrIndex = () => {
+    return currIndex = studyCtrl.cardsDataCards.word.indexOf(document.getElementById(DOMItems.wordTitle).innerText);
+  }
+
   const nextNav = () => {
-    currIndex = studyCtrl.cardsDataCards.word.indexOf(document.getElementById(DOMItems.wordTitle).innerText);
-    studyCtrl.nextCard(currIndex);
+    studyCtrl.nextCard(getCurrIndex());
   };
 
   const prevNav = () => {
-    currIndex = studyCtrl.cardsDataCards.word.indexOf(document.getElementById(DOMItems.wordTitle).innerText);
-    studyCtrl.prevCard(currIndex);
+    studyCtrl.prevCard(getCurrIndex());
   };
+
+  const gotItScore = () => {
+    studyCtrl.updateScore(1, getCurrIndex());
+     console.log(getCurrIndex());
+  };
+
+  const missedItScore = () => {
+    studyCtrl.updateScore(0, getCurrIndex());
+    console.log(getCurrIndex());
+  }
 
   // Listen to the DOM
   const addEventListeners = () => {
@@ -224,6 +303,10 @@ const AppController = ((studyCtrl, UICtrl) => {
     // Listen to cards navigation
     document.getElementById(DOMItems.nextBt).addEventListener('click', nextNav);
     document.getElementById(DOMItems.prevBt).addEventListener('click', prevNav);
+
+    // Listem do got it and missed buttons
+    document.getElementById(DOMItems.gotItBt).addEventListener('click', gotItScore);
+    document.getElementById(DOMItems.missedBt).addEventListener('click', missedItScore);
 
   }
 
